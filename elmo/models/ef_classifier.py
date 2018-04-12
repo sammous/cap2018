@@ -87,16 +87,16 @@ class EFClassifier(Model):
         loss : torch.FloatTensor, optional
             A scalar loss to be optimised.
         """
-        embedded_text = self.text_field_embedder(title)
-        text_mask = util.get_text_field_mask(title)
-        encoded_text = self.text_encoder(embedded_title, title_mask)
+        embedded_text = self.text_field_embedder(text)
+        text_mask = util.get_text_field_mask(text)
+        encoded_text = self.text_encoder(embedded_text, text_mask)
 
         logits = self.classifier_feedforward(encoded_text)
         output_dict = {'logits': logits}
-        if label is not None:
-            loss = self.loss(logits, label.squeeze(-1))
+        if level is not None:
+            loss = self.loss(logits, level.squeeze(-1))
             for metric in self.metrics.values():
-                metric(logits, label.squeeze(-1))
+                metric(logits, level.squeeze(-1))
             output_dict["loss"] = loss
 
         return output_dict
@@ -114,7 +114,7 @@ class EFClassifier(Model):
         argmax_indices = numpy.argmax(predictions, axis=-1)
         labels = [self.vocab.get_token_from_index(x, namespace="labels")
                   for x in argmax_indices]
-        output_dict['label'] = labels
+        output_dict['level'] = labels
         return output_dict
 
     @overrides
