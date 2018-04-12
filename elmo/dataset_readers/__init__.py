@@ -1,1 +1,1 @@
-from papers.dataset_readers.semantic_scholar_papers import SemanticScholarDatasetReader
+from elmo.dataset_readers.cap_readers import EFDatasetReader

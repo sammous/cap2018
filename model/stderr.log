@@ -1,0 +1,29 @@
+0it [00:00, ?it/s]
+Traceback (most recent call last):
+  File "/usr/lib/python3.6/runpy.py", line 193, in _run_module_as_main
+    "__main__", mod_spec)
+  File "/usr/lib/python3.6/runpy.py", line 85, in _run_code
+    exec(code, run_globals)
+  File "/home/sami/.virtualenvs/allen/lib/python3.6/site-packages/allennlp-0.4.1-py3.6.egg/allennlp/run.py", line 18, in <module>
+    main(prog="python -m allennlp.run")
+  File "/home/sami/.virtualenvs/allen/lib/python3.6/site-packages/allennlp-0.4.1-py3.6.egg/allennlp/commands/__init__.py", line 65, in main
+    args.func(args)
+  File "/home/sami/.virtualenvs/allen/lib/python3.6/site-packages/allennlp-0.4.1-py3.6.egg/allennlp/commands/train.py", line 99, in train_model_from_args
+    args.recover)
+  File "/home/sami/.virtualenvs/allen/lib/python3.6/site-packages/allennlp-0.4.1-py3.6.egg/allennlp/commands/train.py", line 129, in train_model_from_file
+    return train_model(params, serialization_dir, file_friendly_logging, recover)
+  File "/home/sami/.virtualenvs/allen/lib/python3.6/site-packages/allennlp-0.4.1-py3.6.egg/allennlp/commands/train.py", line 266, in train_model
+    (instance for key, dataset in all_datasets.items()
+  File "/home/sami/.virtualenvs/allen/lib/python3.6/site-packages/allennlp-0.4.1-py3.6.egg/allennlp/data/vocabulary.py", line 383, in from_params
+    only_include_pretrained_words=only_include_pretrained_words)
+  File "/home/sami/.virtualenvs/allen/lib/python3.6/site-packages/allennlp-0.4.1-py3.6.egg/allennlp/data/vocabulary.py", line 331, in from_instances
+    for instance in Tqdm.tqdm(instances):
+  File "/home/sami/.virtualenvs/allen/lib/python3.6/site-packages/tqdm/_tqdm.py", line 919, in __iter__
+    for obj in iterable:
+  File "/home/sami/.virtualenvs/allen/lib/python3.6/site-packages/allennlp-0.4.1-py3.6.egg/allennlp/commands/train.py", line 267, in <genexpr>
+    for instance in dataset
+  File "/home/sami/Documents/Github/cap2018/elmo/dataset_readers/cap_readers.py", line 58, in _read
+    with open(cached_path(file_path), "r") as data_file:
+  File "/home/sami/.virtualenvs/allen/lib/python3.6/site-packages/allennlp-0.4.1-py3.6.egg/allennlp/common/file_utils.py", line 76, in cached_path
+    raise FileNotFoundError("file {} not found".format(url_or_filename))
+FileNotFoundError: file ../train.txt not found

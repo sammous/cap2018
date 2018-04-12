@@ -1,1 +1,1 @@
-from papers.models.academic_paper_classifier import AcademicPaperClassifier
+from elmo.models.ef_classifier import EFClassifier

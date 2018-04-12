@@ -12,8 +12,8 @@
       }
     }
   },
-  "train_data_path": "../train.txt",
-  "validation_data_path": "../valid.txt",
+  "train_data_path": "/home/sami/Documents/Github/cap2018/train.txt",
+  "validation_data_path": "/home/sami/Documents/Github/cap2018/valid.txt",
   "model": {
     "type": "ef_classifier",
     "text_field_embedder": {

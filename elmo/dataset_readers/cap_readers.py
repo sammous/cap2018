@@ -3,7 +3,6 @@ import json
 import logging
 
 from overrides import overrides
-from pymongo import MongoClient
 import tqdm
 
 from allennlp.common import Params

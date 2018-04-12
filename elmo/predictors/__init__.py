@@ -1,1 +1,1 @@
-from papers.predictors.paper_classifier_predictor import PaperClassifierPredictor
+from elmo.predictors.ef_classifier_predictor import EfClassifierPredictor
