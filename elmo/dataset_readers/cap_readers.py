@@ -63,7 +63,7 @@ class EFDatasetReader(DatasetReader):
                     continue
                 cap_json = json.loads(line)
                 text = cap_json['fulltext']
-                level = paper_json['level']
+                level = cap_json['level']
                 yield self.text_to_instance(text, level)
 
     @overrides
