@@ -33,7 +33,7 @@
     },
     "text_encoder": {
       "type": "alternating_lstm",
-      "input_size": 1224,
+      "input_size": 1124,
       "hidden_size": 300,
       "num_layers": 8,
       "recurrent_dropout_probability": 0.1,
