@@ -73,7 +73,7 @@ class EFDatasetReader(DatasetReader):
         text_field = TextField(tokenized_text, self._token_indexers)
         fields = {'text': text_field}
         if level is not None:
-            fields['label'] = LabelField(level)
+            fields['level'] = LabelField(level)
         return Instance(fields)
 
     @classmethod

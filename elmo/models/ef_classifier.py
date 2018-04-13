@@ -5,6 +5,7 @@ from overrides import overrides
 import torch
 import torch.nn.functional as F
 
+import logging
 from allennlp.common import Params
 from allennlp.common.checks import ConfigurationError
 from allennlp.data import Vocabulary
@@ -13,6 +14,8 @@ from allennlp.models.model import Model
 from allennlp.nn import InitializerApplicator, RegularizerApplicator
 from allennlp.nn import util
 from allennlp.training.metrics import CategoricalAccuracy
+from allennlp.training.metrics.multilabel_f1 import MultiLabelF1Measure
+logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
 @Model.register("ef_classifier")
@@ -22,7 +25,7 @@ class EFClassifier(Model):
     fulltext and we predict some output label, which is the level.
 
     The basic model structure: we'll embed the text and encode with Seq2VecEncoders, getting a single vector representing the content of each.  We'll then
-    concatenate those two vectors, and pass the result through a feedforward network, the output of
+    concatenate those two vectorfrom toxic.training.metrics.multilabel_f1 import MultiLabelF1Measures, and pass the result through a feedforward network, the output of
     which we'll use as our scores for each label.
 
     Parameters
@@ -49,6 +52,9 @@ class EFClassifier(Model):
 
         self.text_field_embedder = text_field_embedder
         self.num_classes = self.vocab.get_vocab_size("labels")
+        logger.info("------------------------------------")
+        logger.info("num class {}".format(self.num_classes))
+        logger.info("------------------------------------")
         self.text_encoder = text_encoder
         self.classifier_feedforward = classifier_feedforward
 
@@ -61,8 +67,8 @@ class EFClassifier(Model):
                 "accuracy": CategoricalAccuracy(),
                 "accuracy3": CategoricalAccuracy(top_k=3)
         }
-        self.loss = torch.nn.CrossEntropyLoss()
-
+        self.f1 = MultiLabelF1Measure()
+        self.loss = torch.nn.MultiLabelSoftMarginLoss()
         initializer(self)
 
     @overrides
@@ -91,6 +97,9 @@ class EFClassifier(Model):
         text_mask = util.get_text_field_mask(text)
         encoded_text = self.text_encoder(embedded_text, text_mask)
 
+        logger.info("------------------------------------")
+        #logger.info("type encoder {}".format(instance(encoded_text))
+        logger.info("------------------------------------")
         logits = self.classifier_feedforward(encoded_text)
         output_dict = {'logits': logits}
         if level is not None:
