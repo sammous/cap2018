@@ -66,7 +66,7 @@ class EFClassifier(Model):
                 "accuracy": CategoricalAccuracy(),
                 "accuracy3": CategoricalAccuracy(top_k=3),
         }
-        self.loss = torch.nn.MultiLabelSoftMarginLoss()
+        self.loss = torch.nn.CrossEntropyLoss()
         initializer(self)
 
     @overrides
