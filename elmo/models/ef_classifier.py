@@ -14,7 +14,6 @@ from allennlp.models.model import Model
 from allennlp.nn import InitializerApplicator, RegularizerApplicator
 from allennlp.nn import util
 from allennlp.training.metrics import CategoricalAccuracy
-from allennlp.training.metrics.multilabel_f1 import MultiLabelF1Measure
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
@@ -65,9 +64,8 @@ class EFClassifier(Model):
                                                             text_encoder.get_input_dim()))
         self.metrics = {
                 "accuracy": CategoricalAccuracy(),
-                "accuracy3": CategoricalAccuracy(top_k=3)
+                "accuracy3": CategoricalAccuracy(top_k=3),
         }
-        self.f1 = MultiLabelF1Measure()
         self.loss = torch.nn.MultiLabelSoftMarginLoss()
         initializer(self)
 
