@@ -62,12 +62,17 @@ class EFClassifier(Model):
                                      "input dimension of the text_encoder. Found {} and {}, "
                                      "respectively.".format(text_field_embedder.get_output_dim(),
                                                             text_encoder.get_input_dim()))
-        self.metrics = {
-                "accuracy": CategoricalAccuracy(),
-                "accuracy3": CategoricalAccuracy(top_k=3),
-        }
+        self.f1 = F1Measure(positive_label=1)
         self.loss = torch.nn.CrossEntropyLoss()
         initializer(self)
+
+    def get_metrics(self, reset: bool = False) -> Dict[str, float]:
+        precision, recall, f1 = self.f1.get_metric(reset)
+        return {
+            "precision": precision,
+            "recall": recall,
+            "f1": f1
+    }
 
     @overrides
     def forward(self,  # type: ignore
@@ -102,8 +107,9 @@ class EFClassifier(Model):
         output_dict = {'logits': logits}
         if level is not None:
             loss = self.loss(logits, level.squeeze(-1))
-            for metric in self.metrics.values():
-                metric(logits, level.squeeze(-1))
+            label_data = level.squeeze(-1).data.long()
+            predictions = (logits.data > 0.0).long()
+            self.f1(predictions, label_data)
             output_dict["loss"] = loss
 
         return output_dict
@@ -123,10 +129,6 @@ class EFClassifier(Model):
                   for x in argmax_indices]
         output_dict['level'] = labels
         return output_dict
-
-    @overrides
-    def get_metrics(self, reset: bool = False) -> Dict[str, float]:
-        return {metric_name: metric.get_metric(reset) for metric_name, metric in self.metrics.items()}
 
     @classmethod
     def from_params(cls, vocab: Vocabulary, params: Params) -> 'AcademicPaperClassifier':
